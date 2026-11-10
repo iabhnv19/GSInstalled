@@ -37,13 +37,7 @@ $markerEnd   = "# <<< GSInstalled <<<"
 $profileText = Get-Content -Path $profilePath -Raw -ErrorAction SilentlyContinue
 if ($null -eq $profileText) { $profileText = "" }
 
-$block = @"
-$markerStart
-function gsi {
-    & "`$HOME\.get-shit-installed\get-shit-installed.ps1" @args
-}
-$markerEnd
-"@
+$block = "# >>> GSInstalled >>>`r`nfunction gsi {`r`n    & `"`$HOME\.get-shit-installed\get-shit-installed.ps1`" @args`r`n}`r`n# <<< GSInstalled <<<"
 
 if ($profileText.Contains($markerStart) -and $profileText.Contains($markerEnd)) {
     $pattern = "(?s)# >>> GSInstalled >>>.*?# <<< GSInstalled <<<"
@@ -66,4 +60,7 @@ Write-Host ""
 Write-Host "  Launching now..." -ForegroundColor DarkGray
 Write-Host ""
 
-& ([scriptblock]::Create((Get-Content -Path $mainScript -Raw))) @args
+$resolvedMain = Join-Path $HOME ".get-shit-installed\get-shit-installed.ps1"
+if (-not (Test-Path $resolvedMain)) { throw "Main script not found at: $resolvedMain" }
+& $resolvedMain @args
+
