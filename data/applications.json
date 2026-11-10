@@ -1,0 +1,295 @@
+[
+  {
+    "name": "Visual Studio Code",
+    "category": "Programming & Development",
+    "type": "winget",
+    "id": "Microsoft.VisualStudioCode",
+    "description": "Code editor"
+  },
+  {
+    "name": "Git",
+    "category": "Programming & Development",
+    "type": "winget",
+    "id": "Git.Git",
+    "description": "Version control"
+  },
+  {
+    "name": "GCC / G++ (MSYS2 UCRT64)",
+    "category": "Programming & Development",
+    "type": "winget",
+    "id": "MSYS2.MSYS2",
+    "description": "Installs MSYS2; GCC toolchain must then be installed in UCRT64 with pacman"
+  },
+  {
+    "name": "Python",
+    "category": "Programming & Development",
+    "type": "winget",
+    "id": "Python.Python.3.13",
+    "description": "Python runtime"
+  },
+  {
+    "name": "Java JDK (Temurin 21)",
+    "category": "Programming & Development",
+    "type": "winget",
+    "id": "EclipseAdoptium.Temurin.21.JDK",
+    "description": "OpenJDK distribution"
+  },
+  {
+    "name": "Android Studio",
+    "category": "Android Development",
+    "type": "winget",
+    "id": "Google.AndroidStudio",
+    "description": "Android IDE"
+  },
+  {
+    "name": "PyCharm Community",
+    "category": "Programming & Development",
+    "type": "winget",
+    "id": "JetBrains.PyCharm.Community",
+    "description": "Python IDE"
+  },
+  {
+    "name": "Docker Desktop",
+    "category": "DevOps & Containers",
+    "type": "winget",
+    "id": "Docker.DockerDesktop",
+    "description": "Container development; requires WSL2 and virtualization"
+  },
+  {
+    "name": "MySQL",
+    "category": "Databases & API",
+    "type": "winget",
+    "id": "Oracle.MySQL",
+    "description": "MySQL server (package availability may vary)"
+  },
+  {
+    "name": "SQLite",
+    "category": "Databases & API",
+    "type": "winget",
+    "id": "SQLite.SQLite",
+    "description": "SQLite command-line tools"
+  },
+  {
+    "name": "Postman",
+    "category": "Databases & API",
+    "type": "winget",
+    "id": "Postman.Postman",
+    "description": "API client"
+  },
+  {
+    "name": "Bruno",
+    "category": "Databases & API",
+    "type": "winget",
+    "id": "Bruno.Bruno",
+    "description": "Git-friendly API client"
+  },
+  {
+    "name": "Nmap",
+    "category": "Cybersecurity & Networking",
+    "type": "winget",
+    "id": "Insecure.Nmap",
+    "description": "Network discovery and auditing"
+  },
+  {
+    "name": "Wireshark",
+    "category": "Cybersecurity & Networking",
+    "type": "winget",
+    "id": "WiresharkFoundation.Wireshark",
+    "description": "Network protocol analyzer"
+  },
+  {
+    "name": "R",
+    "category": "Data Science",
+    "type": "winget",
+    "id": "RProject.R",
+    "description": "Statistical computing"
+  },
+  {
+    "name": "JupyterLab",
+    "category": "Data Science",
+    "type": "manual",
+    "url": "https://jupyter.org/install",
+    "description": "Install with Python: py -m pip install jupyterlab"
+  },
+  {
+    "name": "ONLYOFFICE Desktop Editors",
+    "category": "Productivity & Documents",
+    "type": "winget",
+    "id": "ONLYOFFICE.DesktopEditors",
+    "description": "Office suite"
+  },
+  {
+    "name": "Obsidian",
+    "category": "Productivity & Documents",
+    "type": "winget",
+    "id": "Obsidian.Obsidian",
+    "description": "Knowledge base and notes"
+  },
+  {
+    "name": "draw.io Desktop",
+    "category": "Productivity & Documents",
+    "type": "winget",
+    "id": "JGraph.Draw",
+    "description": "Diagrams and flowcharts"
+  },
+  {
+    "name": "MiKTeX",
+    "category": "Productivity & Documents",
+    "type": "winget",
+    "id": "MiKTeX.MiKTeX",
+    "description": "LaTeX distribution"
+  },
+  {
+    "name": "VirtualBox",
+    "category": "Virtualization",
+    "type": "winget",
+    "id": "Oracle.VirtualBox",
+    "description": "Virtual machines"
+  },
+  {
+    "name": "VMware Workstation Pro",
+    "category": "Virtualization",
+    "type": "winget",
+    "id": "VMware.WorkstationPro",
+    "description": "Virtual machines"
+  },
+  {
+    "name": "Steam",
+    "category": "Gaming",
+    "type": "winget",
+    "id": "Valve.Steam",
+    "description": "Game launcher"
+  },
+  {
+    "name": "Epic Games Launcher",
+    "category": "Gaming",
+    "type": "winget",
+    "id": "EpicGames.EpicGamesLauncher",
+    "description": "Game launcher"
+  },
+  {
+    "name": "Riot Client",
+    "category": "Gaming",
+    "type": "manual",
+    "url": "https://www.riotgames.com/en",
+    "description": "Download from Riot's official site"
+  },
+  {
+    "name": "TLauncher",
+    "category": "Gaming",
+    "type": "manual",
+    "url": "https://tlauncher.org/",
+    "description": "Third-party launcher; review installer carefully"
+  },
+  {
+    "name": "WinRAR",
+    "category": "Utilities",
+    "type": "winget",
+    "id": "RARLab.WinRAR",
+    "description": "Archive manager"
+  },
+  {
+    "name": "LocalSend",
+    "category": "Utilities",
+    "type": "winget",
+    "id": "LocalSend.LocalSend",
+    "description": "Local network file transfer"
+  },
+  {
+    "name": "Brave Browser",
+    "category": "Browsers",
+    "type": "winget",
+    "id": "Brave.Brave",
+    "description": "Web browser"
+  },
+  {
+    "name": "VLC",
+    "category": "Media",
+    "type": "winget",
+    "id": "VideoLAN.VLC",
+    "description": "Media player"
+  },
+  {
+    "name": "SumatraPDF",
+    "category": "Media",
+    "type": "winget",
+    "id": "SumatraPDF.SumatraPDF",
+    "description": "Lightweight PDF reader"
+  },
+  {
+    "name": "K-Lite Codec Pack",
+    "category": "Media",
+    "type": "winget",
+    "id": "CodecGuide.K-LiteCodecPack.Full",
+    "description": "Media codecs"
+  },
+  {
+    "name": "WizTree",
+    "category": "Utilities",
+    "type": "winget",
+    "id": "AntibodySoftware.WizTree",
+    "description": "Disk space analyzer"
+  },
+  {
+    "name": "Microsoft PowerToys",
+    "category": "Utilities",
+    "type": "winget",
+    "id": "Microsoft.PowerToys",
+    "description": "Windows productivity utilities"
+  },
+  {
+    "name": "7-Zip",
+    "category": "Utilities",
+    "type": "winget",
+    "id": "7zip.7zip",
+    "description": "File archiver"
+  },
+  {
+    "name": "GitHub Desktop",
+    "category": "Programming & Development",
+    "type": "winget",
+    "id": "GitHub.GitHubDesktop",
+    "description": "Git GUI"
+  },
+  {
+    "name": "WSL2",
+    "category": "DevOps & Containers",
+    "type": "custom",
+    "description": "Runs wsl --install; may require administrator privileges and a restart"
+  },
+  {
+    "name": "JetBrains Toolbox",
+    "category": "Programming & Development",
+    "type": "winget",
+    "id": "JetBrains.Toolbox",
+    "description": "Manage JetBrains IDEs"
+  },
+  {
+    "name": "OBS Studio",
+    "category": "Content Creation",
+    "type": "winget",
+    "id": "OBSProject.OBSStudio",
+    "description": "Recording and streaming"
+  },
+  {
+    "name": "GIMP",
+    "category": "Content Creation",
+    "type": "winget",
+    "id": "GIMP.GIMP",
+    "description": "Image editor"
+  },
+  {
+    "name": "scrcpy",
+    "category": "Android Development",
+    "type": "winget",
+    "id": "Genymobile.scrcpy",
+    "description": "Android screen mirroring and control"
+  },
+  {
+    "name": "MCP-related tool (specify package)",
+    "category": "Other / Manual",
+    "type": "manual",
+    "url": "https://modelcontextprotocol.io/",
+    "description": "MCP-BE is ambiguous; choose/install the exact server or client separately"
+  }
+]

@@ -1,0 +1,9 @@
+# Logs generated at runtime (not part of the repo)
+logs/
+
+# Windows thumbnails
+Thumbs.db
+desktop.ini
+
+# macOS
+.DS_Store
