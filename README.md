@@ -1,6 +1,6 @@
 <div align="center">
 
-#  GSInstalled
+# Get Shit Installed
 
 ### One command. Every app you need on Windows.
 
