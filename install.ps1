@@ -1,6 +1,3 @@
-# GSInstalled - Bootstrapper
-# One-liner: irm https://raw.githubusercontent.com/iabhnv19/GSInstalled/main/install.ps1 | iex
-
 $ErrorActionPreference = "Stop"
 $repoRaw    = "https://raw.githubusercontent.com/iabhnv19/GSInstalled/main"
 $installDir = Join-Path $HOME ".get-shit-installed"
