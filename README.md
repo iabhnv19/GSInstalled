@@ -1,124 +1,324 @@
-# GSInstalled
+<div align="center">
 
-A PowerShell-based, terminal software installer for Windows. It uses WinGet for standard packages and keeps a JSON catalog so applications can be added without changing the installer engine.
+#  GSInstalled
 
-## One-line Install
+### One command. Every app you need on Windows.
 
-Open **PowerShell** and run:
+A terminal-based Windows software installer powered by **WinGet** and a simple **JSON catalog** — browse, select and install apps with a fully keyboard-driven interactive menu.
+
+![Platform](https://img.shields.io/badge/platform-Windows%2010%20%7C%2011-0078D4?style=for-the-badge&logo=windows&logoColor=white)
+![PowerShell](https://img.shields.io/badge/PowerShell-5.1%20%7C%207-5391FE?style=for-the-badge&logo=powershell&logoColor=white)
+![WinGet](https://img.shields.io/badge/powered%20by-WinGet-0078D4?style=for-the-badge&logo=microsoft&logoColor=white)
+![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
+
+</div>
+
+---
+
+##  Why this exists
+
+Setting up a new Windows PC means browser-hopping through a dozen download pages, clicking through installers and hoping you got the right version.
+
+**GSInstalled** replaces all of that with a single command. Run it on a brand-new machine, pick what you want from the menu, press Enter — done.
+
+---
+
+##  Quick start
+
+### PowerShell
 
 ```powershell
 irm https://raw.githubusercontent.com/iabhnv19/GSInstalled/main/install.ps1 | iex
 ```
 
-This will:
-- Download the installer to `~\.get-shit-installed\`
-- Register a `gsi` command in your PowerShell profile
-- Launch the interactive menu immediately
+### Command Prompt (cmd)
 
-After that, open any new PowerShell window and type:
+```bat
+powershell -NoProfile -ExecutionPolicy Bypass -Command "irm 'https://raw.githubusercontent.com/iabhnv19/GSInstalled/main/install.ps1' | iex"
+```
 
-```powershell
+That's it. The installer downloads everything, registers the `gsi` command and launches the menu immediately.
+
+> If you get stale results right after an update to this repo, add a cache-buster: `...install.ps1?v=2`
+
+---
+
+##  What it does
+
+| # | Step | Details |
+|:-:|------|---------|
+| 1 | **Download** | Fetches `get-shit-installed.ps1` and `data/applications.json` to `~\.get-shit-installed\` |
+| 2 | **Register** | Adds a `gsi` function to your PowerShell profile so the command is always available |
+| 3 | **Launch** | Opens the interactive menu right away — no need to open a new terminal first |
+
+Everything is **idempotent**: running the installer again updates the files and re-patches the profile block without duplicating it.
+
+### Highlights
+
+-  Fully keyboard-driven interactive menu (arrows, Space, Enter, Esc, A, N)
+-  Multi-column app list (up to 4 columns) with page support for large catalogs
+-  Smooth incremental rendering — only changed rows repaint, no full-screen flicker
+-  **Find / remove old versions** — scans registry for duplicate installs and offers cleanup
+-  Extend the catalog by editing a single JSON file — no script changes needed
+-  Works in PowerShell 5.1, PowerShell 7 and the VS Code terminal
+
+---
+
+##  Usage
+
+After installing, open any PowerShell window and run:
+
+```text
 gsi
 ```
 
-## Requirements
+You'll see the interactive menu. Navigate with the keyboard, pick your apps, confirm and install.
 
-- Windows 10 (recent supported build) or Windows 11
-- PowerShell 5.1 or PowerShell 7
-- WinGet (Microsoft App Installer) for WinGet-managed packages
-- Internet access
-
-## Manual Run
-
-If you prefer to clone and run locally:
+### Command-line flags
 
 ```powershell
-git clone https://github.com/iabhnv19/GSInstalled.git
-cd GSInstalled
-Set-ExecutionPolicy -Scope Process Bypass
-.\get-shit-installed.ps1
+gsi          # Open the interactive menu
+gsi -List    # Print all catalog entries
+gsi -Update  # Re-run installs / check for updates
+gsi -Search Python   # Filter catalog by name
 ```
 
-Useful command-line options:
+---
+
+##  Keyboard navigation
+
+| Key | Action |
+|-----|--------|
+| ↑ / ↓ | Move up / down (within a column) |
+| ← / → | Jump between columns |
+| Space | Toggle selection |
+| Enter | Confirm selection |
+| Esc | Go back / exit |
+| A | Select all |
+| N | Clear selection |
+| PageUp / PageDown | Switch pages |
+| Home / End | First / last app |
+
+---
+
+##  Catalog
+
+Apps live in [`data/applications.json`](data/applications.json). Three entry types are supported:
+
+| Type | Behaviour |
+|------|-----------|
+| `winget` | Installed via `winget install --id <id> --exact` |
+| `custom` | Handled by a reviewed custom action inside the script |
+| `manual` | Displays instructions / source URL — nothing is executed |
+
+**To add an app**, find its WinGet ID and add an entry:
+
+```json
+{
+  "name": "My App",
+  "category": "Utilities",
+  "type": "winget",
+  "id": "Publisher.AppName",
+  "description": "Does something useful"
+}
+```
+
+Verify package IDs with:
 
 ```powershell
-.\get-shit-installed.ps1 -List
-.\get-shit-installed.ps1 -Update
-.\get-shit-installed.ps1 -Search Python
+winget search "app name"
+winget show --id Publisher.AppName --exact
 ```
 
-## Selection
+---
 
-- Enter application numbers separated by commas, e.g. `1,3,5`
-- `A` selects all entries in the current list
-- `N` selects none
-- `Q` goes back
-- Installation requires a separate confirmation
+##  How it works
 
-## Catalog
-
-Edit `data/applications.json` to add or modify entries.
-
-- `type: winget`: requires an exact WinGet package ID in `id`.
-- `type: custom`: handled by a reviewed custom action in the script.
-- `type: manual`: displays instructions/source URL but does not execute an installer.
-
-Package IDs can change or be unavailable by region/source. Verify with:
-
-```powershell
-winget search "application name"
-winget show --id PACKAGE.ID --exact
+```mermaid
+flowchart TD
+    A["irm install.ps1 | iex"] --> B["Bootstrapper"]
+    B --> B1["Download get-shit-installed.ps1"]
+    B --> B2["Download data/applications.json"]
+    B --> B3["Patch gsi into $PROFILE"]
+    B3 --> C["gsi launches"]
+    C --> D["Interactive menu"]
+    D --> E{"User picks apps"}
+    E --> F["winget / custom / manual handler"]
+    F --> G["Install summary + logs saved"]
 ```
 
-## Important Notes
+---
 
-- **GCC** entry installs MSYS2 only. Open the MSYS2 UCRT64 terminal and install GCC with:
+##  Important notes
+
+- **GCC / G++** — the catalog installs **MSYS2** only. After it finishes, open the MSYS2 UCRT64 terminal and run:
   `pacman -S --needed mingw-w64-ucrt-x86_64-gcc`
-- **WSL2** may require administrator privileges, virtualization support, and a restart.
+- **WSL2** may require administrator privileges, virtualisation support and a restart.
 - **Docker Desktop** requires WSL2 or a supported Hyper-V configuration.
-- **JupyterLab** is listed as a manual Python package install: `py -m pip install jupyterlab`
-- **TLauncher** is a manual entry. Review third-party software carefully before installing it.
-- WinGet uninstall support varies by package. Review each application's data-retention behavior before uninstalling.
-- The installer does not bypass UAC or silently elevate itself.
+- **JupyterLab** is a manual entry — install it with: `py -m pip install jupyterlab`
+- **TLauncher** is a manual entry. Review third-party software carefully before installing.
+- The installer does **not** bypass UAC or silently elevate itself.
 
-## Logs
+---
 
-Runtime logs are saved in `logs/`. Installation summaries are appended to `logs/history.csv`.
+##  Old-version cleanup
 
-## Safety
+The menu includes **Find / remove old application versions**. It scans Windows uninstall registry records for duplicate names with different versions, keeps the newest and offers the rest for review.
 
-Review the catalog and package IDs before installing. This project invokes WinGet and a small, explicit WSL command. It does not download and execute arbitrary URLs from the catalog.
+- MSI packages with a recognized product GUID can be removed via `msiexec` after explicit typed confirmation.
+- EXE / vendor-specific uninstallers are **not** run automatically — remove those through *Windows Settings → Apps → Installed apps*.
+- Detection is heuristic. Side-by-side installs may be intentional. Review every candidate before removal.
 
-## Old-Version Cleanup
+---
 
-The menu includes **Find / remove old application versions**. It scans Windows uninstall registry records for duplicate application names with different versions, keeps the newest detected version, and offers older entries for review.
+##  Logs
 
-- MSI packages with a recognized Windows Installer product GUID can be removed through `msiexec` after an explicit typed confirmation.
-- EXE/vendor-specific uninstallers are not executed automatically because their silent switches and behavior differ. Remove those through Windows Settings > Apps > Installed apps.
-- Detection is heuristic. Side-by-side versions may be intentional, and not every application's leftover update/cache files appear in uninstall records.
-- Review every candidate before removal. This is not a general-purpose disk/cache cleaner.
+Runtime logs are saved to `~\.get-shit-installed\logs\`. Installation summaries are appended to `logs\history.csv`.
 
-## Keyboard Navigation
+---
 
-The interactive menus support keyboard navigation:
+##  Troubleshooting
 
-- **Up / Down arrows**: move through menu items or applications (within a column)
-- **Space**: toggle an application selection
-- **Enter**: confirm the current selection
-- **Esc**: go back or exit the current menu
-- **A**: select all applications in the current list
-- **N**: clear the current selection
+<details>
+<summary><b><code>gsi</code> is not recognized</b></summary>
 
-The application list is shown in **multiple columns** (up to 4, chosen from your terminal width), filled top-to-bottom. If it still does not fit, it is split into pages.
+- Open a **new** terminal. Terminals opened before the install don't see the updated profile.
+- Check that `~\.get-shit-installed\get-shit-installed.ps1` exists.
+- If it's missing, run the install command again.
+</details>
 
-- **Left / Right arrows**: jump between columns
-- **PageUp / PageDown**: switch pages
-- **Home / End**: first / last app
+<details>
+<summary><b>"running scripts is disabled on this system"</b></summary>
 
-## Smooth Terminal Rendering
+Run this once to allow local scripts:
 
-The interactive menus use incremental console updates. Only the previous and current selection rows are repainted; the visible list is redrawn only when scrolling.
+```powershell
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
 
-## License
+Then open a new terminal and try `gsi` again.
+</details>
 
-[MIT](LICENSE)
+<details>
+<summary><b><code>winget</code> is not found</b></summary>
+
+Install or update **App Installer** from the Microsoft Store, then run `gsi` again.
+</details>
+
+<details>
+<summary><b>A WinGet install fails</b></summary>
+
+- Check your internet connection.
+- Run `gsi -Update` to retry. Package downloads can fail on a bad connection and a second run picks up where the first stopped.
+- Verify the package ID is still valid: `winget search "app name"`.
+</details>
+
+<details>
+<summary><b>Download fails with a TLS / SSL error</b></summary>
+
+Add `[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12` before the `irm` command, or use the cmd one-liner from [Quick start](#-quick-start).
+</details>
+
+---
+
+##  FAQ
+
+**Is this safe to run?**
+It's open source — read every line before running. See the scripts in this repo.
+
+**Does it work offline?**
+No. WinGet downloads packages from the internet.
+
+**Can I run it more than once?**
+Yes. Already-installed apps are detected and skipped by WinGet. The `-Update` flag re-checks everything.
+
+**Does it work on Windows 7 / 8?**
+No. It targets Windows 10 and 11 and relies on `winget`.
+
+**How do I add my own apps?**
+Edit `~\.get-shit-installed\data\applications.json` or open a PR against this repo.
+
+---
+
+##  Uninstall
+
+Remove the downloaded files:
+
+```powershell
+Remove-Item "$HOME\.get-shit-installed" -Recurse -Force
+```
+
+Then remove the `gsi` block from your PowerShell profile (`notepad $PROFILE`) — it's clearly marked:
+
+```powershell
+# >>> GSInstalled >>>
+...
+# <<< GSInstalled <<<
+```
+
+---
+
+##  Repository structure
+
+```text
+GSInstalled/
+├── install.ps1              # Bootstrapper: registers gsi and launches the menu
+├── get-shit-installed.ps1   # Main installer script
+├── softup.ps1               # Convenience launcher (local use)
+├── data/
+│   └── applications.json    # App catalog
+├── README.md                # You are here
+├── LICENSE                  # MIT License
+└── .gitignore
+```
+
+---
+
+##  Security
+
+This project downloads and runs PowerShell code from GitHub — **read the scripts before you run them**.
+
+It makes these changes:
+
+- Downloads files to `~\.get-shit-installed\`
+- Adds a `gsi` function block to your PowerShell profile (`$PROFILE`)
+- Installs apps through `winget` (no arbitrary URL execution from the catalog)
+- May remove old application versions from the registry — only after your explicit typed confirmation
+
+---
+
+##  License & author
+
+Released under the [MIT License](LICENSE).
+
+## Developer
+
+Developed by
+
+<div align="center">
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/iabhnv19">
+        <img src="https://github.com/iabhnv19.png" width="80" height="80" alt="Abhinav's GitHub profile picture" />
+        <br />
+        <strong>Abhinav</strong>
+        <br />
+        @iabhnv19
+      </a>
+    </td>
+  </tr>
+</table>
+
+</div>
+
+<div align="center">
+
+**Made with ❤️ and PowerShell.**
+
+⭐ If this saved you time, consider starring the repo!
+
+*Every app you need, one menu at a time.*
+
+</div>
